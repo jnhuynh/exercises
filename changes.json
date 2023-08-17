@@ -1,3 +1,16 @@
 {
-  "operations": []
+  "operations": [
+    {
+      "action": "user.create_playlist",
+      "arguments": ["99", "99"]
+    },
+    {
+      "action": "playlist.add_song",
+      "arguments": ["99", "99"]
+    },
+    {
+      "action": "playlist.destroy",
+      "arguments": ["99"]
+    }
+  ]
 }

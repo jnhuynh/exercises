@@ -6,12 +6,6 @@
 - `path_to_changes.json`: can be any JSON file in the structure outlined in the "Structure of Change file" section.
 - `path_to_output.json`: any filename. _NOTE_ existing files will be overwritten.
 
-# Acceptance Criteria for Changes file
-
-- Add an existing song to an existing playlist
-- Add a new playlist for existing user; playlist should contain at least 1 existing song
-- Remove an existing playlist
-
 # Design Decisions/Considerations
 
 ### Structure of Input file
@@ -45,8 +39,8 @@
 
 Available actions: "playlist.add_song", "user.create_playlist", "playlist.destroy"
 
-- "playlist.add_song": requires 2 arguments, first argument is ID of a playlist, second is ID of a song
 - "user.create_playlist": requires 2 arguments, first argument is ID of a user, second is ID of a song
+- "playlist.add_song": requires 2 arguments, first argument is ID of a playlist, second is ID of a song
 - "playlist.destroy": requires 1 arguments, the argument is ID of a playlist
 
 ```json
@@ -91,10 +85,11 @@ operations on song, playlists, and future models, but YAGNI for now:
   - very large input files
   - large changes files
 
-# Test Cases That need to be automated
+### Logic & Test Cases that need to be automated
 
 - Parsing input & changes json
 - Ensuring input has users, songs, playlists keys
 - Ensuring changes has operations key
+- Pending Implementation: Ensuring that operations are properly formatted
 
 # Time to implement
