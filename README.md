@@ -6,6 +6,10 @@
 - `path_to_changes.json`: can be any JSON file in the structure outlined in the "Structure of Change file" section.
 - `path_to_output.json`: any filename. _NOTE_ existing files will be overwritten.
 
+### Debugging
+
+To validate output, pass any arbitrary 4th argument to enable debug logs or explicitly set it in source code.
+
 # Design Decisions/Considerations
 
 ### Structure of Input file
@@ -91,6 +95,8 @@ operations on song, playlists, and future models, but YAGNI for now:
 
 - Any invalid operation will fail the entire operation, the assumption here is that operations are serial and may depend on previous operations.
 - Assumes that IDs are strings, using UUID for IDs to reduce chances of ID collision
+- Assumes that we are creating new playlists with just one song right now. It could easily be extended for multiple songs
+- Refactorings are listed as TODOs in source code
 
 ### Logic & Test Cases that need to be automated
 

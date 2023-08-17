@@ -44,7 +44,9 @@ changes_file_path = ARGV[1]
 output_file_path = ARGV[2]
 
 # Set to true to print debug statements
-debug = true
+if ARGV[3]
+  debug = true
+end
 
 if debug
   puts "Input file: #{input_file_path}"
@@ -65,7 +67,7 @@ changes_json = open_json(changes_file_path)
 operations = changes_json['operations']
 ensure_key_exists_with_type(changes_json, 'operations', Array)
 
-# TODO: refactor each operation into own method
+# TODO: refactor each operation into own method for easier unit testing
 operations.each do |operation|
   ensure_key_exists_with_type(operation, 'action', String)
   ensure_key_exists_with_type(operation, 'arguments', Array)
@@ -121,4 +123,11 @@ operations.each do |operation|
     puts "ERROR: #{operation['action']} is not a valid action"
     exit
   end
+end
+
+puts input_json if debug
+
+# 'w+' will create the file if it doesn't exist, overwrite if it exists
+File.open(output_file_path, 'w+') do |f|
+  f.write(JSON.pretty_generate(input_json))
 end
