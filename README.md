@@ -91,4 +91,10 @@ operations on song, playlists, and future models, but YAGNI for now:
   - very large input files
   - large changes files
 
+# Test Cases That need to be automated
+
+- Parsing input & changes json
+- Ensuring input has users, songs, playlists keys
+- Ensuring changes has operations key
+
 # Time to implement

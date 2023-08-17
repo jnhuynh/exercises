@@ -26,3 +26,10 @@ puts "Changes file: #{changes_file_path}"
 puts "Output file: #{output_file_path}"
 
 input_json = open_json(input_file_path)
+
+changes_json = open_json(changes_file_path)
+operations = changes_json['operations']
+unless operations && operations.is_a?(Array)
+  puts "ERROR: changes.json operations must be an array"
+  exit
+end
