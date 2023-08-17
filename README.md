@@ -1,10 +1,10 @@
 # How to execute
 
-`./apply_changes.rb input.json changes.json output.json`
+`./apply_changes.rb path_to_input.json path_to_changes.json path_to_output.json`
 
-- `input.json`: can be any JSON file in the structure outlined in the "Structure of Input file" section.
-- `changes.json`: can be any JSON file in the structure outlined in the "Structure of Change file" section.
-- `output.json`: any filename. _NOTE_ existing files will be overwritten.
+- `path_to_input.json`: can be any JSON file in the structure outlined in the "Structure of Input file" section.
+- `path_to_changes.json`: can be any JSON file in the structure outlined in the "Structure of Change file" section.
+- `path_to_output.json`: any filename. _NOTE_ existing files will be overwritten.
 
 # Acceptance Criteria for Changes file
 
