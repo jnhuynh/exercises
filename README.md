@@ -10,6 +10,10 @@
 
 To validate output, pass any arbitrary 4th argument to enable debug logs or explicitly set it in source code.
 
+With the provided input & changes files in the repo, you can run the following to validate functionality.
+
+`./apply_changes.rb spotify.json changes.json output.json debug`
+
 # Design Decisions/Considerations
 
 ### Structure of Input file
