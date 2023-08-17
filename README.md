@@ -90,6 +90,7 @@ operations on song, playlists, and future models, but YAGNI for now:
 ### Considerations/Assumptions
 
 - Any invalid operation will fail the entire operation, the assumption here is that operations are serial and may depend on previous operations.
+- Assumes that IDs are strings, using UUID for IDs to reduce chances of ID collision
 
 ### Logic & Test Cases that need to be automated
 
@@ -97,5 +98,6 @@ operations on song, playlists, and future models, but YAGNI for now:
 - Ensuring input has users, songs, playlists keys
 - Ensuring changes has operations key
 - Pending Implementation: Ensuring that operations are properly formatted
+- Test the actual actions with automation
 
 # Time to implement

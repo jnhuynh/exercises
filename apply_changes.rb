@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'json'
+require 'securerandom'
 
 # Reads json_file_path and returns Hash representing JSON values.
 def open_json(json_file_path)
@@ -45,9 +46,12 @@ output_file_path = ARGV[2]
 # Set to true to print debug statements
 debug = true
 
-puts "Input file: #{input_file_path}"
-puts "Changes file: #{changes_file_path}"
-puts "Output file: #{output_file_path}"
+if debug
+  puts "Input file: #{input_file_path}"
+  puts "Changes file: #{changes_file_path}"
+  puts "Output file: #{output_file_path}"
+  puts
+end
 
 input_json = open_json(input_file_path)
 ensure_key_exists_with_type(input_json, 'users', Array)
@@ -61,21 +65,58 @@ changes_json = open_json(changes_file_path)
 operations = changes_json['operations']
 ensure_key_exists_with_type(changes_json, 'operations', Array)
 
+# TODO: refactor each operation into own method
 operations.each do |operation|
   ensure_key_exists_with_type(operation, 'action', String)
   ensure_key_exists_with_type(operation, 'arguments', Array)
 
   case operation['action']
+  # TODO: should users.create_playlist accept more than one song?
   when 'user.create_playlist'
-    puts 'user.create_playlist' if debug
     user_id = operation['arguments'][0]
     song_id = operation['arguments'][1]
     ensure_record_exists(users, user_id)
     ensure_record_exists(songs, song_id)
+    new_playlist = {
+      "id": SecureRandom.uuid,
+      "owner_id": user_id,
+      "song_ids": [song_id]
+    }
+
+    if debug
+      puts 'user.create_playlist'
+      puts new_playlist
+      puts
+    end
+
+    playlists << new_playlist
   when 'playlist.add_song'
-    puts 'playlist.add_song' if debug
+    playlist_id = operation['arguments'][0]
+    song_id = operation['arguments'][1]
+    ensure_record_exists(playlists, playlist_id)
+    ensure_record_exists(songs, song_id)
+
+    playlist = playlists.find { |p| p['id'] == playlist_id }
+    # TODO: We could handle this a few different ways... this the simplest
+    ensure_key_exists_with_type(playlist, 'song_ids', Array)
+    playlist['song_ids'] << song_id
+
+    if debug
+      puts 'playlist.add_song'
+      puts playlist
+      puts
+    end
   when 'playlist.destroy'
-    puts 'playlist.destroy' if debug
+    # TODO: We don't have to ensure the playlist exists because deleting a non existant
+    # playlist is safe, although it is a signal that something is weird...
+    playlist_id = operation['arguments'][0]
+    playlists.delete_if { |p| p['id'] == playlist_id }
+
+    if debug
+      puts 'playlist.destroy'
+      puts playlists
+      puts
+    end
   else
     puts "ERROR: #{operation['action']} is not a valid action"
     exit
