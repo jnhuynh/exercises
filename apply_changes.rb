@@ -12,6 +12,17 @@ def open_json(json_file_path)
   end
 end
 
+def ensure_key_exists_with_type(hash, key, type)
+  unless hash[key]
+    puts "ERROR: changes.json #{key} must be present"
+    exit
+  end
+  unless hash[key].is_a?(type)
+    puts "ERROR: changes.json #{key} must be a #{type}"
+    exit
+  end
+end
+
 if ARGV.count < 3
   puts "ERROR: not enough arguments"
   puts "Usage: ./apply_changes.rb <path_to_input.json> <path_to_changes.json> <path_to_output.json>"
@@ -29,7 +40,4 @@ input_json = open_json(input_file_path)
 
 changes_json = open_json(changes_file_path)
 operations = changes_json['operations']
-unless operations && operations.is_a?(Array)
-  puts "ERROR: changes.json operations must be an array"
-  exit
-end
+ensure_key_exists_with_type(changes_json, 'operations', Array)
