@@ -14,11 +14,11 @@ end
 
 def ensure_key_exists_with_type(hash, key, type)
   unless hash[key]
-    puts "ERROR: changes.json #{key} must be present"
+    puts "ERROR: #{key} must be present"
     exit
   end
   unless hash[key].is_a?(type)
-    puts "ERROR: changes.json #{key} must be a #{type}"
+    puts "ERROR: #{key} must be a #{type}"
     exit
   end
 end
@@ -37,6 +37,9 @@ puts "Changes file: #{changes_file_path}"
 puts "Output file: #{output_file_path}"
 
 input_json = open_json(input_file_path)
+ensure_key_exists_with_type(input_json, 'users', Array)
+ensure_key_exists_with_type(input_json, 'songs', Array)
+ensure_key_exists_with_type(input_json, 'playlists', Array)
 
 changes_json = open_json(changes_file_path)
 operations = changes_json['operations']
