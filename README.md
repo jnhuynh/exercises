@@ -39,6 +39,8 @@
 
 Available actions: "playlist.add_song", "user.create_playlist", "playlist.destroy"
 
+_NOTE_: All actions are assumed to be in sequential order.
+
 - "user.create_playlist": requires 2 arguments, first argument is ID of a user, second is ID of a song
 - "playlist.add_song": requires 2 arguments, first argument is ID of a playlist, second is ID of a song
 - "playlist.destroy": requires 1 arguments, the argument is ID of a playlist
@@ -84,6 +86,10 @@ operations on song, playlists, and future models, but YAGNI for now:
 - Scale to handle
   - very large input files
   - large changes files
+
+### Considerations/Assumptions
+
+- Any invalid operation will fail the entire operation, the assumption here is that operations are serial and may depend on previous operations.
 
 ### Logic & Test Cases that need to be automated
 

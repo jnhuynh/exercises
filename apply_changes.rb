@@ -44,3 +44,18 @@ ensure_key_exists_with_type(input_json, 'playlists', Array)
 changes_json = open_json(changes_file_path)
 operations = changes_json['operations']
 ensure_key_exists_with_type(changes_json, 'operations', Array)
+
+operations.each do |operation|
+  ensure_key_exists_with_type(operation, 'action', String)
+  case operation['action']
+  when 'user.create_playlist'
+    puts 'user.create_playlist'
+  when 'playlist.add_song'
+    puts 'playlist.add_song'
+  when 'playlist.destroy'
+    puts 'playlist.destroy'
+  else
+    puts "ERROR: #{operation['action']} is not a valid action"
+    exit
+  end
+end
