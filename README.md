@@ -88,8 +88,20 @@ operations on song, playlists, and future models, but YAGNI for now:
 # Future Improvements
 
 - Scale to handle
-  - very large input files
-  - large changes files
+  - If the data sources that generate changes & input files can be processed in real time, I'd focus on chunking & deduping the the data sources so that the resulting input & changes files are optimized.
+    - Large files can suck up a lot of memory as we read the file. The ideal scenario is to focus on chunking out the files before it becomes too large in the first place
+    - Large input files
+      - I assume that songs don't change a lot and become massive. Also songs don't belong to a specific user, it's more a shared catalog. As such, I would extract that out into a different data store than a JSON file. Redis cache, DB backed, or something else.
+      - I would also split input files into per user files. It goes hand in hand with the strategy below for large change files. Preprocessing it into per user input files.
+    - Large changes files
+      - You can also segregate the changes into per user change files and then squash various sequential actions in it. This also unlocks parallel processing of changes on a per user basis E.G.
+        - Multiple add of a particular song can be squashed into 1 action
+        - Multiple deletes of a playlist can be squashed into 1 action
+  - If the large input & changes files are provided to us without the possibility of real time pre-processing before the files are generated, we'll have to read the files in byte chunks/stream.
+    - Assuming the top level keys of users, songs, and playlists are still valid, I'd process the top level keys as they are streamed in and write to redis or some other data store that allows retrieval of subsets for operations. From there I would apply similar strategies to segregate by user and dedupe actions.
+    - There are gems that allow processing specific paths of a JSON file and processsing that value of that path in chunks.
+    - I think the high level concept here is to read the JSON, keep track of open and closing braces/brackets, and reading the JSON file in chunks until it can be parsed into meaningful JSON.
+    - Things like https://github.com/dgraham/json-stream & https://github.com/brianmario/yajl-ruby will will maintain a state machine and notify on certain conditions, e.g. array of completion and we can then extract out those values to store into less memory intensive data stores for further processing.
 
 ### Considerations/Assumptions
 
@@ -107,3 +119,6 @@ operations on song, playlists, and future models, but YAGNI for now:
 - Test the actual actions with automation
 
 # Time to implement
+
+- Actual coding time ~70 minutes.
+- Time digesting prompt, thinking through concepts, and writing/updating readme ~30 minutes.
